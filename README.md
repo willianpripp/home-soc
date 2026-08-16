@@ -74,12 +74,19 @@ HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json -
 ## Layout
 
 ```
-schema/001_init.sql   the whole data model, and the reasoning for it
-ingest/trivy.py       Trivy JSON to findings, including the resolve pass
-ingest/enrich.py      CISA KEV and FIRST EPSS
-ingest/cli.py         one entry point, invoked by a timer and by hand
-exposure.yaml         which images are reachable, and how. Hand-written
-demo/                 an invented run, so a stranger can see it work
+home-soc/
+├── schema/
+│   └── 001_init.sql       # the whole data model, and the reasoning for it
+├── ingest/
+│   ├── cli.py             # one entry point, invoked by a timer and by hand
+│   ├── trivy.py           # Trivy JSON to findings, including the resolve pass
+│   ├── enrich.py          # CISA KEV and FIRST EPSS
+│   ├── db.py              # connection and numbered SQL migrations
+│   └── Dockerfile         # built from the repo root, so it can see schema/
+├── demo/                  # an invented run, so a stranger can see it work
+├── exposure.yaml          # which images are reachable, and how. Hand-written
+├── docker-compose.yml     # postgres, plus a CLI container that never stays up
+└── README.md
 ```
 
 There is no daemon. Nothing here needs to be resident, and a cron-shaped tool
