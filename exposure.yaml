@@ -1,0 +1,79 @@
+# Which images are actually reachable, and how.
+#
+# Nothing can infer this, which is why it is hand-written and version
+# controlled rather than derived. With zero inbound ports from the internet,
+# severity alone is close to meaningless for ranking: a CRITICAL in something
+# that only exists at build time is not the same problem as a HIGH in the one
+# process answering on the private network.
+#
+#   tailnet     answers on the private overlay network, so any device on it
+#               reaches this. The largest blast radius available here.
+#   internal    reachable only from the host or the container network.
+#   build-only  present in an image but not serving anything.
+#   unknown     not listed below. Scores between internal and build-only, and
+#               `home-soc exposure` prints these out loud so a new stack cannot
+#               silently inherit a middling rank.
+#
+# Image names only. No hostnames, no addresses: this file is public.
+
+images:
+  caddy:2.10:
+    exposure: tailnet
+    note: reverse proxy in front of the household ledger
+
+  caddy:2.10.2-alpine:
+    exposure: tailnet
+    note: reverse proxy, second stack
+
+  ghcr.io/gethomepage/homepage:v1.13.2:
+    exposure: tailnet
+    note: the dashboard
+
+  adguard/adguardhome:v0.107.78:
+    exposure: tailnet
+    note: DNS for every device in the house, so its blast radius is the house
+
+  grafana/grafana-oss:12.4.3:
+    exposure: tailnet
+
+  nginx:1.29-alpine:
+    exposure: internal
+    note: serves the sanitised status JSON on the compose network only
+
+  nicolargo/glances:4.5.6-full:
+    exposure: internal
+
+  postgres:17.10:
+    exposure: internal
+    note: loopback-bound, reached only over the compose network
+
+  postgres:17.10-bookworm:
+    exposure: internal
+
+  finances-postgres:17.10-en_US:
+    exposure: internal
+    note: holds the ledger, but no listener outside the compose network
+
+  calendar-app:local:
+    exposure: tailnet
+  groceries-app:
+    exposure: tailnet
+  popcorn-app:
+    exposure: tailnet
+  finances-app:local:
+    exposure: tailnet
+  zonetrader-api:local:
+    exposure: tailnet
+
+  wallpaper:local:
+    exposure: build-only
+    note: generates an image and exits; nothing listens
+
+  # Demo images, so the invented run in demo/ ranks sensibly too.
+  demo-web:1.4.2:
+    exposure: tailnet
+  demo-worker:2.0.0:
+    exposure: internal
+  demo-builder:latest:
+    exposure: build-only
+    note: a builder image; nothing it contains is ever reachable

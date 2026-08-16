@@ -1,0 +1,54 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install
+        run: pip install -r ingest/requirements.txt ruff
+
+      - name: Lint
+        run: ruff check ingest/
+
+      # The schema is the most load-bearing file here, so it gets applied to a
+      # real Postgres rather than eyeballed. A migration that does not apply is
+      # the one bug that makes every other check meaningless.
+      - name: Apply schema to a real Postgres
+        env:
+          HOMESOC_DATABASE_URL: postgresql://homesoc:ci@localhost:5432/homesoc
+        run: cd ingest && python cli.py migrate
+
+      # End to end on the invented run in demo/: ingest, load exposure, report.
+      # Proves the pipeline works for someone who just cloned this, which is the
+      # only claim the README makes that a reader can check in one command.
+      - name: Ingest the demo run
+        env:
+          HOMESOC_DATABASE_URL: postgresql://homesoc:ci@localhost:5432/homesoc
+        run: |
+          cd ingest
+          python cli.py exposure ../exposure.yaml
+          python cli.py ingest-trivy ../demo/json --all
+          python cli.py report --limit 5
+
+    services:
+      postgres:
+        image: postgres:17.10
+        env:
+          POSTGRES_DB: homesoc
+          POSTGRES_USER: homesoc
+          POSTGRES_PASSWORD: ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U homesoc"
+          --health-interval 10s --health-timeout 5s --health-retries 5

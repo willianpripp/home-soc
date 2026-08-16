@@ -1,0 +1,123 @@
+# home-soc
+
+A small detection platform for a home network. It takes the telemetry a
+household already produces, gives it a schema, ranks it against what the rest of
+the world knows, and turns it into a backlog somebody can actually work.
+
+It exists because of a specific moment. A weekly container scan reported **453
+fixable HIGH and CRITICAL findings**, and the only way to read them was:
+
+```sh
+ssh lab 'sudo cat /srv/scan/latest.txt'
+```
+
+A number you cannot act on is just anxiety. Ten minutes after the first ingest,
+the same data said something useful instead:
+
+```
+open: 421 fixable, 298 with no fix available  |  in CISA KEV: 0  |  EPSS >= 0.1: 1
+```
+
+Nothing in this estate is being actively exploited, one thing has a meaningful
+probability, and the rest is maintenance. That is a completely different
+Saturday.
+
+## What it does today
+
+- **Ingests Trivy scan output** into Postgres, one row per finding, with a
+  natural key so a finding is a thing that persists rather than a line in
+  tonight's report. `first_seen` is set once and never moved, so "this has been
+  open three weeks" is answerable.
+- **Enriches from two free public feeds**: CISA KEV (is it being exploited in
+  the wild) and FIRST EPSS (probability of exploitation in the next 30 days).
+- **Ranks by what actually matters here**, not by severity alone.
+- **Tracks state**: a finding that stops being reported is resolved, not
+  deleted, and one that comes back keeps its original `first_seen` instead of
+  masquerading as new.
+
+## Why severity alone does not rank anything
+
+This network has **zero inbound ports**. Everything is reached over a private
+overlay network. In that world a CRITICAL in an image that only exists at build
+time is not the same problem as a HIGH in the one process answering on the
+network, and sorting by CVSS puts them side by side.
+
+So the priority score asks four questions in order:
+
+| Question | Weight | Why it is first |
+|---|---|---|
+| Is there a fix? | 1000 | Nothing without a fixed version can be worked this week. Unfixable findings are counted, never hidden, and always sort last. |
+| Is it being exploited? | 500 | CISA KEV presence outranks any severity label a scanner attaches. |
+| Is exploitation likely? | 250 | EPSS ≥ 0.1 puts a CVE in the small minority worth caring about. |
+| Can it be reached? | 0–120 | Hand-written in [`exposure.yaml`](exposure.yaml), because nothing can infer it. |
+| Severity | 0–40 | Last, as a tie-break rather than the headline. |
+
+## Try it
+
+```sh
+cp .env.example .env          # only HOMESOC_DB_PASSWORD needs a value
+docker compose up -d db
+docker compose run --rm ingest migrate
+docker compose run --rm ingest exposure
+docker compose run --rm ingest ingest-trivy /scan/json --all
+docker compose run --rm ingest enrich
+docker compose run --rm ingest report
+```
+
+`demo/` carries an invented scan run so the whole pipeline can be exercised
+without a real scanner:
+
+```sh
+HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json --all
+```
+
+## Layout
+
+```
+schema/001_init.sql   the whole data model, and the reasoning for it
+ingest/trivy.py       Trivy JSON to findings, including the resolve pass
+ingest/enrich.py      CISA KEV and FIRST EPSS
+ingest/cli.py         one entry point, invoked by a timer and by hand
+exposure.yaml         which images are reachable, and how. Hand-written
+demo/                 an invented run, so a stranger can see it work
+```
+
+There is no daemon. Nothing here needs to be resident, and a cron-shaped tool
+is one less thing that can be quietly dead while looking alive.
+
+## Design notes
+
+**No ORM.** The queries are the interesting part of this repository, and hiding
+them behind a mapper would make the detection logic harder to read, which is the
+opposite of the point. Migrations are numbered SQL files applied in order.
+
+**Suppression is owned in exactly one place.** The scanner's own ignore
+mechanism is deliberately unused: a finding suppressed at the scanner never
+reaches the database at all, and the count would then be wrong in the
+safe-looking direction, which is the worst way for a security number to be wrong.
+Suppression lives in `vuln_finding.status`.
+
+**Typed tables over a shared envelope.** `source` and `scan_run` are the
+envelope; facts live in typed tables rather than generic JSONB, because rules
+have to be readable SQL and a rule full of `payload->>'field'` is not. Adding a
+source later is a new ingester and a new table, never a migration of what is
+already there.
+
+## Status
+
+Early. Trivy ingest, enrichment and the prioritised report work against real
+data. Not built yet: DNS ingest, the rule engine with per-rule tests, and the
+triage UI. Those are phases 2 to 4.
+
+## How this was built
+
+I built this with [Claude Code](https://claude.com/claude-code), using several
+of Anthropic's models, and I would rather say that plainly than leave anyone to
+guess. Most of the code here was written by a model. The decisions were not:
+what to rank, what to refuse to build, and why an unfixable CRITICAL sorts below
+a fixable HIGH. It runs against my own household's real telemetry, which is
+where every design decision in it came from.
+
+## License
+
+MIT, see [LICENSE](LICENSE).

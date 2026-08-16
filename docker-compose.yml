@@ -1,0 +1,47 @@
+# home-soc: the house's detection platform.
+#
+# Two services and one of them does not run. That is the shape on purpose:
+# there is nothing here that needs to be resident, and a cron-shaped tool is one
+# less thing that can be quietly dead while looking alive.
+
+services:
+  db:
+    image: postgres:17.10
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: homesoc
+      POSTGRES_USER: homesoc
+      POSTGRES_PASSWORD: ${HOMESOC_DB_PASSWORD:?set HOMESOC_DB_PASSWORD in .env}
+    volumes:
+      # A bind mount under a predictable tree, never a named volume: it makes a
+      # host migration one rsync and lets the backup role find the data without
+      # enumerating Docker's internals.
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      # Loopback only. A reverse proxy or a private overlay network is meant to
+      # be the way in, and nothing here should ever be reachable from the LAN.
+      - "127.0.0.1:${HOMESOC_DB_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U homesoc -d homesoc"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  ingest:
+    build:
+      context: .
+      dockerfile: ingest/Dockerfile
+    # Never started by `up`. Invoked as `docker compose run --rm ingest <cmd>`,
+    # by a systemd timer right after the weekly scan and by hand otherwise.
+    profiles: ["cli"]
+    environment:
+      HOMESOC_DATABASE_URL: postgresql://homesoc:${HOMESOC_DB_PASSWORD}@db:5432/homesoc
+    volumes:
+      # The scan output, read-only. This container has no business writing to
+      # the tree it is reading, and the tree carries an inventory of every
+      # unpatched hole on the host.
+      - ${HOMESOC_SCAN_DIR:-/srv/scan}:/scan:ro
+      - ./exposure.yaml:/app/ingest/exposure.yaml:ro
+    depends_on:
+      db:
+        condition: service_healthy

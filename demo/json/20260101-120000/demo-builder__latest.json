@@ -1,0 +1,23 @@
+{
+  "ArtifactName": "demo-builder:latest",
+  "Results": [
+    {
+      "Target": "demo-builder:latest (debian 13)",
+      "Class": "os-pkgs",
+      "Type": "debian",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2025-33330",
+          "PkgName": "binutils",
+          "InstalledVersion": "2.43",
+          "Severity": "CRITICAL",
+          "Title": "binutils: heap overflow in objdump",
+          "PkgIdentifier": {
+            "PURL": "pkg:deb/debian/binutils@2.43"
+          },
+          "FixedVersion": "2.44"
+        }
+      ]
+    }
+  ]
+}
