@@ -1,0 +1,7 @@
+# ruff cannot tell a same-directory import from a third-party package, and this
+# layout has no installable package: `ingest/` is a directory of scripts run by
+# `python cli.py`, deliberately, because a cron-invoked tool does not need to be
+# packaged. Without this, isort files `db`, `enrich` and `trivy` alongside
+# `yaml` and then complains the block is unsorted.
+[lint.isort]
+known-first-party = ["cli", "db", "enrich", "trivy"]
