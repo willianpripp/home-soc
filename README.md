@@ -35,7 +35,7 @@ Saturday.
   deleted, and one that comes back keeps its original `first_seen` instead of
   masquerading as new.
 
-## Why severity alone does not rank anything
+## How it works: why severity alone does not rank anything
 
 This network has **zero inbound ports**. Everything is reached over a private
 overlay network. In that world a CRITICAL in an image that only exists at build
@@ -52,7 +52,7 @@ So the priority score asks four questions in order:
 | Can it be reached? | 0–120 | Hand-written in [`exposure.yaml`](exposure.yaml), because nothing can infer it. |
 | Severity | 0–40 | Last, as a tie-break rather than the headline. |
 
-## Try it
+## Quick start
 
 ```sh
 cp .env.example .env          # only HOMESOC_DB_PASSWORD needs a value
@@ -84,6 +84,23 @@ demo/                 an invented run, so a stranger can see it work
 
 There is no daemon. Nothing here needs to be resident, and a cron-shaped tool
 is one less thing that can be quietly dead while looking alive.
+
+## Running it for real
+
+This is not a demo that was built and abandoned. It runs on the small home
+server it monitors, in Docker, against that machine's own weekly scan output.
+
+- **The database is loopback-bound.** Nothing here publishes a port to the
+  network. The host has no inbound ports open at all, which is also why
+  `exposure.yaml` exists: with nothing internet-facing, "how reachable is this
+  image" is the question severity cannot answer.
+- **Ingest is invoked by a systemd timer** immediately after the weekly scan
+  finishes, so the backlog is current without anything sitting resident.
+- **The scan tree is mounted read-only.** This container has no business
+  writing to the directory it reads, and that directory is an inventory of
+  every unpatched hole on the host.
+- **Findings and the raw scan output never leave the machine.** What you see in
+  this repository is the code and an invented demo run, never real findings.
 
 ## Design notes
 
