@@ -1,0 +1,29 @@
+name: hygiene
+
+# push and pull_request catch a regression the moment it lands.
+# workflow_dispatch is for a manual rerun. The weekly schedule exists because
+# metadata checks (description, topics, licence) have nothing to push: someone
+# can clear the repo description in the GitHub UI with zero commits, and only a
+# schedule ever notices that kind of drift.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1" # 03:17 UTC every Monday, off-peak
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      # Pinned to the v1 tag on purpose: the standard lives in one repo, but a
+      # push to it should not be able to turn this repo red without someone
+      # choosing to move the pin.
+      - uses: willianpripp/repo-hygiene@v1
+        with:
+          profile: public-portfolio
+          suggest: "true"

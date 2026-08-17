@@ -20,20 +20,6 @@ jobs:
 
       - name: Lint
         run: ruff check ingest/
-
-      # Audit this repo against the same public-portfolio bar as every other
-      # public repo here. Pinned to a major tag rather than main on purpose: a
-      # push to the auditor should not be able to turn this repo red without
-      # someone choosing to move the pin.
-      #
-      # This step was missing from the first version of this file, which is how
-      # a flat-list Layout section reached a public repo: the going-public gate
-      # audits once at flip time, and nothing re-checked afterwards.
-      - uses: willianpripp/repo-hygiene@v1
-        with:
-          profile: public-portfolio
-          suggest: "true"
-
       # The schema is the most load-bearing file here, so it gets applied to a
       # real Postgres rather than eyeballed. A migration that does not apply is
       # the one bug that makes every other check meaningless.
