@@ -3,6 +3,9 @@
     {
       "time": "2026-08-15T09:15:50.000000-04:00",
       "client": "192.168.86.20",
+      "client_info": {
+        "name": "living-room-tv"
+      },
       "question": {
         "name": "random-onetime-shop.example.net",
         "type": "A"
@@ -17,6 +20,9 @@
     {
       "time": "2026-08-15T09:15:24.000000-04:00",
       "client": "192.168.86.21",
+      "client_info": {
+        "name": "willian-phone"
+      },
       "question": {
         "name": "aGVsbG93b3JsZHRoaXNpc2Fsb25ndHVubmVsbGFiZWw.tunnel.example.com",
         "type": "A"
@@ -157,6 +163,9 @@
     {
       "time": "2026-08-15T08:56:45.000000-04:00",
       "client": "192.168.86.21",
+      "client_info": {
+        "name": "willian-phone"
+      },
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -185,6 +194,9 @@
     {
       "time": "2026-08-15T08:52:18.000000-04:00",
       "client": "192.168.86.20",
+      "client_info": {
+        "name": "living-room-tv"
+      },
       "question": {
         "name": "ads.pinterest.com",
         "type": "A"

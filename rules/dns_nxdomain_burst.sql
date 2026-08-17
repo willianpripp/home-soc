@@ -22,9 +22,14 @@
 -- Why the floor of 30: without it, a client with a near-zero baseline would
 -- trip the rule on a jump to single digits, which is noise, not a burst. The
 -- floor and the multiplier have to both hold.
+--
+-- The entity stays the client address, never the name: an IP is the stable
+-- key a hit tracks across runs, while a name is data AdGuard may not always
+-- have. The name only rides along in the summary, because a human triages
+-- "the living-room TV", not an IP.
 
 with last_day as (
-    select client, count(*) as nxdomain_count
+    select client, max(client_name) as client_name, count(*) as nxdomain_count
     from dns_query
     where status = 'NXDOMAIN'
       and not blocked
@@ -52,7 +57,7 @@ select
         '%s NXDOMAIN answers in the last 24h vs a %s/day average over the prior week',
         d.nxdomain_count,
         round(coalesce(w.avg_daily_nxdomain, 0)::numeric, 1)
-    ) as summary
+    ) || coalesce(', device ' || d.client_name, '') as summary
 from last_day d
 left join prior_week w on w.client = d.client
 where d.nxdomain_count >= 30

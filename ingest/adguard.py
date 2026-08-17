@@ -122,6 +122,9 @@ def _map_entry(entry: dict) -> dict | None:
     return {
         "ts": ts,
         "client": entry.get("client") or "",
+        # AdGuard's own name for this client (DHCP lease or its client
+        # config), not derived here. Nullable: not every client has one.
+        "client_name": (entry.get("client_info") or {}).get("name") or None,
         "qname": qname,
         "qtype": question.get("type") or "",
         "reason": reason or None,
@@ -169,10 +172,10 @@ def _ingest_entries(conn: psycopg.Connection, run_key: str, entries: list[dict])
         for r in rows:
             cur.execute(
                 """insert into dns_query
-                     (ts, client, qname, qtype, reason, blocked, status, upstream,
-                      cached, elapsed_ms, registrable_domain, label_entropy, run_id)
-                   values (%(ts)s, %(client)s, %(qname)s, %(qtype)s, %(reason)s,
-                           %(blocked)s, %(status)s, %(upstream)s, %(cached)s,
+                     (ts, client, client_name, qname, qtype, reason, blocked, status,
+                      upstream, cached, elapsed_ms, registrable_domain, label_entropy, run_id)
+                   values (%(ts)s, %(client)s, %(client_name)s, %(qname)s, %(qtype)s,
+                           %(reason)s, %(blocked)s, %(status)s, %(upstream)s, %(cached)s,
                            %(elapsed_ms)s, %(registrable_domain)s, %(label_entropy)s, %(run)s)
                    on conflict (ts, client, qname, qtype) do nothing""",
                 {**r, "run": run_id},

@@ -14,9 +14,14 @@
 -- Why the floor of 20: without it, a client with a near-zero baseline (say,
 -- one blocked query a day) would trip the rule on a jump to three, which is
 -- noise, not a spike. The floor and the multiplier have to both hold.
+--
+-- The entity stays the client address, never the name: an IP is the stable
+-- key a hit tracks across runs, while a name is data AdGuard may not always
+-- have. The name only rides along in the summary, because a human triages
+-- "the living-room TV", not an IP.
 
 with last_day as (
-    select client, count(*) as blocked_count
+    select client, max(client_name) as client_name, count(*) as blocked_count
     from dns_query
     where blocked
       and ts >= now() - interval '24 hours'
@@ -42,7 +47,7 @@ select
         '%s blocked queries in the last 24h vs a %s/day average over the prior week',
         d.blocked_count,
         round(coalesce(w.avg_daily_blocked, 0)::numeric, 1)
-    ) as summary
+    ) || coalesce(', device ' || d.client_name, '') as summary
 from last_day d
 left join prior_week w on w.client = d.client
 where d.blocked_count >= 20

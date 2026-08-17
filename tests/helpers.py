@@ -39,6 +39,7 @@ def insert_query(
     qtype: str = "A",
     blocked: bool = False,
     status: str | None = None,
+    client_name: str | None = None,
 ) -> None:
     """`status` defaults to the value AdGuard would actually report for
     `blocked` (NXDOMAIN for a block, NOERROR otherwise), same as before this
@@ -46,17 +47,22 @@ def insert_query(
     dns_nxdomain_burst, which cares about a genuine resolution failure
     (blocked=False, status='NXDOMAIN') as distinct from an AdGuard block that
     also happens to answer NXDOMAIN.
+
+    `client_name` defaults to None, same as a client AdGuard has not been
+    given a name for.
     """
     with conn.cursor() as cur:
         cur.execute(
             """insert into dns_query
-                 (ts, client, qname, qtype, reason, blocked, status,
+                 (ts, client, client_name, qname, qtype, reason, blocked, status,
                   registrable_domain, label_entropy)
-               values (%(ts)s, %(client)s, %(qname)s, %(qtype)s, %(reason)s, %(blocked)s,
-                       %(status)s, %(registrable_domain)s, %(label_entropy)s)""",
+               values (%(ts)s, %(client)s, %(client_name)s, %(qname)s, %(qtype)s,
+                       %(reason)s, %(blocked)s, %(status)s, %(registrable_domain)s,
+                       %(label_entropy)s)""",
             {
                 "ts": ts,
                 "client": client,
+                "client_name": client_name,
                 "qname": qname,
                 "qtype": qtype,
                 "reason": "FilteredBlackList" if blocked else "NotFilteredNotFound",

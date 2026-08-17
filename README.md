@@ -36,7 +36,10 @@ Saturday.
   query, with a registrable domain and a Shannon entropy score computed at
   ingest so DGA-shaped domains and tunnelled subdomains stand out without a
   rule reading raw qnames one at a time. Raw rows are pruned after a
-  retention window; a "domain ever seen" registry is not.
+  retention window; a "domain ever seen" registry is not. The device name
+  AdGuard already knows for a client (from DHCP or its own client config)
+  is captured at the same ingest step; it lives only in the database, never
+  in this repository.
 - **Ranks by what actually matters here**, not by severity alone.
 - **Tracks state**: a finding that stops being reported is resolved, not
   deleted, and one that comes back keeps its original `first_seen` instead of

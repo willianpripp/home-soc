@@ -17,22 +17,41 @@ def _entities(conn):
         return {r[0] for r in cur.fetchall()}
 
 
-def _nxdomain_burst(conn, client, ts, count):
+def _summary(conn, entity):
+    with conn.cursor() as cur:
+        cur.execute(
+            "select summary from rule_hit where rule_id = 'dns_nxdomain_burst' and entity = %s",
+            (entity,),
+        )
+        return cur.fetchone()[0]
+
+
+def _nxdomain_burst(conn, client, ts, count, client_name=None):
     for i in range(count):
         insert_query(conn, ts - timedelta(minutes=i), client,
                      f"random{i}92kx.example.net", "example.net",
-                     blocked=False, status="NXDOMAIN")
+                     blocked=False, status="NXDOMAIN", client_name=client_name)
 
 
 def test_fires_for_a_client_spiking_past_3x_and_the_floor(conn):
     now = datetime.now(timezone.utc)
     # Baseline: 5 NXDOMAIN/day over the prior week (35 total). Last day: 40,
-    # which is both >= 30 absolute and >= 3x the 5/day baseline.
-    _nxdomain_burst(conn, "192.168.1.51", now - timedelta(days=4), 35)
-    _nxdomain_burst(conn, "192.168.1.51", now - timedelta(hours=1), 40)
+    # which is both >= 30 absolute and >= 3x the 5/day baseline. The device
+    # is named, same as AdGuard would carry for a client it recognises.
+    _nxdomain_burst(conn, "192.168.1.51", now - timedelta(days=4), 35,
+                     client_name="willian-phone")
+    _nxdomain_burst(conn, "192.168.1.51", now - timedelta(hours=1), 40,
+                     client_name="willian-phone")
+    # Same burst, but a client AdGuard never got a name for: the summary must
+    # stay clean, no dangling ", device" for a name that is not there.
+    _nxdomain_burst(conn, "192.168.1.52", now - timedelta(days=4), 35)
+    _nxdomain_burst(conn, "192.168.1.52", now - timedelta(hours=1), 40)
 
     rules.run(conn, RULES_DIR)
     assert "192.168.1.51" in _entities(conn)
+    assert "192.168.1.52" in _entities(conn)
+    assert "willian-phone" in _summary(conn, "192.168.1.51")
+    assert "device" not in _summary(conn, "192.168.1.52")
 
 
 def test_does_not_fire_for_high_but_proportionate_volume(conn):
