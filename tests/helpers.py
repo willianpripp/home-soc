@@ -38,7 +38,15 @@ def insert_query(
     label_entropy: float = 0.0,
     qtype: str = "A",
     blocked: bool = False,
+    status: str | None = None,
 ) -> None:
+    """`status` defaults to the value AdGuard would actually report for
+    `blocked` (NXDOMAIN for a block, NOERROR otherwise), same as before this
+    parameter existed. It only needs overriding for a rule like
+    dns_nxdomain_burst, which cares about a genuine resolution failure
+    (blocked=False, status='NXDOMAIN') as distinct from an AdGuard block that
+    also happens to answer NXDOMAIN.
+    """
     with conn.cursor() as cur:
         cur.execute(
             """insert into dns_query
@@ -53,9 +61,24 @@ def insert_query(
                 "qtype": qtype,
                 "reason": "FilteredBlackList" if blocked else "NotFilteredNotFound",
                 "blocked": blocked,
-                "status": "NXDOMAIN" if blocked else "NOERROR",
+                "status": status if status is not None else ("NXDOMAIN" if blocked else "NOERROR"),
                 "registrable_domain": registrable_domain,
                 "label_entropy": label_entropy,
             },
+        )
+    conn.commit()
+
+
+def insert_known_bad(
+    conn: psycopg.Connection,
+    domain: str,
+    source: str = "urlhaus",
+) -> None:
+    """fetched_at is left to its table default (now()); no test so far needs
+    to control it, since dns_known_bad_domain does not read that column."""
+    with conn.cursor() as cur:
+        cur.execute(
+            "insert into known_bad_domain (domain, source) values (%s, %s)",
+            (domain, source),
         )
     conn.commit()

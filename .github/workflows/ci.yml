@@ -38,7 +38,7 @@ jobs:
           cd ingest
           python cli.py exposure ../exposure.yaml
           python cli.py ingest-trivy ../demo/json --all
-          python cli.py ingest-dns --from-file ../demo/querylog.json
+          python cli.py ingest-dns --from-file ../demo/querylog.json --shift-to-now
           python cli.py rules
           python cli.py report --limit 5
 

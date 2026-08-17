@@ -31,6 +31,11 @@ services:
     build:
       context: .
       dockerfile: ingest/Dockerfile
+    # Shared with ingest-dns below: same Dockerfile, one image. Without an
+    # explicit tag Compose would build and keep two identical images, one per
+    # service name, which is exactly the kind of silent disk growth the host's
+    # weekly Docker GC exists to fight.
+    image: home-soc-ingest
     # Never started by `up`. Invoked as `docker compose run --rm ingest <cmd>`,
     # by a systemd timer right after the weekly scan and by hand otherwise.
     profiles: ["cli"]
@@ -42,6 +47,30 @@ services:
       # unpatched hole on the host.
       - ${HOMESOC_SCAN_DIR:-/srv/scan}:/scan:ro
       - ./exposure.yaml:/app/ingest/exposure.yaml:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # The same image as `ingest`, joined to the HOST network instead of the
+  # compose bridge, and used only for `ingest-dns`. It exists because AdGuard
+  # Home's API is deliberately loopback-bound on the machine it runs on, and a
+  # container on the bridge cannot reach a 127.0.0.1 listener; from the host
+  # network it can, and the database is still reachable through its own
+  # loopback-published port. Everything that does not need AdGuard keeps
+  # running on the bridge with the isolation that implies.
+  ingest-dns:
+    build:
+      context: .
+      dockerfile: ingest/Dockerfile
+    image: home-soc-ingest
+    profiles: ["cli"]
+    network_mode: host
+    environment:
+      HOMESOC_DATABASE_URL: postgresql://homesoc:${HOMESOC_DB_PASSWORD}@127.0.0.1:${HOMESOC_DB_PORT:-5433}/homesoc
+      HOMESOC_ADGUARD_URL: ${HOMESOC_ADGUARD_URL:-http://127.0.0.1:3005}
+      HOMESOC_ADGUARD_USER: ${HOMESOC_ADGUARD_USER:-}
+      HOMESOC_ADGUARD_PASSWORD: ${HOMESOC_ADGUARD_PASSWORD:-}
+      HOMESOC_DNS_RETENTION_DAYS: ${HOMESOC_DNS_RETENTION_DAYS:-35}
     depends_on:
       db:
         condition: service_healthy

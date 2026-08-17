@@ -1,4 +1,5 @@
-"""Enrichment: what the rest of the world already knows about these CVEs.
+"""Enrichment: what the rest of the world already knows about these CVEs and
+domains.
 
 Severity alone cannot rank 453 findings. Two free public feeds do most of the
 work of turning that list into a short one:
@@ -10,9 +11,18 @@ work of turning that list into a short one:
                every CVE. Most score below 0.001; a handful score above 0.1.
                That distribution is exactly what makes a long backlog tractable.
 
-Both are fetched over plain HTTPS with no credentials. Neither is required for
-the tool to work: without them the priority view still ranks by fixability and
-exposure, just less sharply.
+A third feed plays the same role on the DNS side:
+
+  abuse.ch     URLhaus's hostfile: domains a public community already knows
+  URLhaus      are serving malware. The shape-based DNS rules (entropy,
+               newly-seen, blocked-spike) all infer suspicion; this one states
+               it outright, the same relationship KEV has to a CVE's own
+               severity score.
+
+All three are fetched over plain HTTPS with no credentials. None is required
+for the tool to work: without them the priority view still ranks by
+fixability and exposure, and the DNS rules still fire on shape alone, just
+less sharply.
 """
 from __future__ import annotations
 
@@ -26,6 +36,7 @@ import psycopg
 
 KEV_URL = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
 EPSS_URL = "https://epss.empiricalsecurity.com/epss_scores-current.csv.gz"
+URLHAUS_HOSTFILE_URL = "https://urlhaus.abuse.ch/downloads/hostfile/"
 
 UA = "home-soc/0.1 (+https://github.com/willianpripp/home-soc)"
 
@@ -110,3 +121,49 @@ def fetch_epss(conn: psycopg.Connection, only_known: bool = True) -> int:
             loaded += 1
     conn.commit()
     return loaded
+
+
+def fetch_urlhaus(conn: psycopg.Connection) -> int:
+    """Load abuse.ch's URLhaus hostfile into known_bad_domain.
+
+    The hostfile is plain text, one entry per line, "127.0.0.1<tab>domain"
+    (the format DNS sinkholes and ad blockers consume directly); lines
+    starting with # are header comments. Parsing is defensive on purpose:
+    a blank line, a comment, or a line with fewer than two fields is skipped
+    rather than raising, because a feed that lightly changes shape should not
+    take enrichment down with it.
+
+    The feed is a current-state snapshot, not an event stream: it says what
+    abuse.ch considers bad right now, not "this domain went bad on this
+    date". So the load strategy matches that shape instead of upserting like
+    KEV and EPSS do: everything already stored from this source is deleted
+    and the file's current contents are inserted, in one transaction. Without
+    that, a domain abuse.ch de-listed months ago would sit here forever,
+    and a hit against it would look exactly as current as one against a
+    domain still on the list today.
+    """
+    text = _get(URLHAUS_HOSTFILE_URL).decode("utf-8", errors="replace")
+
+    domains: set[str] = set()
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        fields = line.split()
+        if len(fields) < 2:
+            continue
+        domain = fields[1].strip().rstrip(".").lower()
+        if domain:
+            domains.add(domain)
+
+    with conn.cursor() as cur:
+        cur.execute("delete from known_bad_domain where source = 'urlhaus'")
+        for domain in domains:
+            cur.execute(
+                """insert into known_bad_domain (domain, source, fetched_at)
+                   values (%s, 'urlhaus', now())
+                   on conflict (domain, source) do update set fetched_at = excluded.fetched_at""",
+                (domain,),
+            )
+    conn.commit()
+    return len(domains)

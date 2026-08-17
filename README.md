@@ -28,8 +28,10 @@ Saturday.
   natural key so a finding is a thing that persists rather than a line in
   tonight's report. `first_seen` is set once and never moved, so "this has been
   open three weeks" is answerable.
-- **Enriches from two free public feeds**: CISA KEV (is it being exploited in
-  the wild) and FIRST EPSS (probability of exploitation in the next 30 days).
+- **Enriches from three free public feeds**: CISA KEV (is it being exploited
+  in the wild) and FIRST EPSS (probability of exploitation in the next 30
+  days) for CVEs, and abuse.ch URLhaus (domains a public community already
+  knows are serving malware) for the DNS side.
 - **Ingests the household's DNS query log** from AdGuard Home, one row per
   query, with a registrable domain and a Shannon entropy score computed at
   ingest so DGA-shaped domains and tunnelled subdomains stand out without a
@@ -76,11 +78,18 @@ because a rule nobody can read top to bottom is a rule nobody trusts. See
 | `dns_newly_seen_domain` | A registrable domain queried for the first time in the last 24 hours | With zero inbound ports, both initial access and C2 start with a lookup nobody made before |
 | `dns_dga_entropy` | DNS names with Shannon entropy >= 3.5 bits/char and at least 12 characters | English-like labels sit under 3 bits/char; base32 or random labels sit above. The length floor stops short labels from maxing out entropy on a tiny alphabet |
 | `dns_blocked_spike` | A client whose blocked-query count in the last 24h is at least 3x its prior-week daily average, and at least 20 in absolute terms | Fires on change, not on volume; the floor stops a 0-to-3 jump from tripping it |
+| `dns_known_bad_domain` | A query (by registrable domain or exact qname) for a domain on an abuse.ch blocklist | Someone else already knows this is bad; an unblocked hit is the urgent case, AdGuard's own filtering missed what a public list already caught |
+| `dns_nxdomain_burst` | A client with at least 30 unblocked NXDOMAIN answers in the last 24h, at least 3x its prior-week daily average | A DGA burns through mostly-nonexistent generated names before any of them resolves; the burst of failures is the earliest signal there is |
+| `dns_tunnel_volume` | A registrable domain queried with at least 50 distinct qnames in the last 24h, averaging at least 3.0 bits/char entropy | Tunnelling's tell is cardinality times randomness; the entropy term keeps big legitimate CDNs (many distinct but word-shaped subdomains) below the line |
 
 The engine (`ingest/rules.py`) never closes a hit on its own. A hit that stops
 firing simply stops moving `last_seen`; deciding it is fixed, accepted, or a
 false positive is a human call, the same principle `vuln_finding.status`
 already applies to scan findings.
+
+CI refuses a rule without a matching `tests/test_rule_<stem>.py`, in both
+directions: an untested rule fails the build, and so does a test left behind
+for a rule that no longer exists.
 
 ## Quick start
 
@@ -100,8 +109,13 @@ without a real scanner:
 
 ```sh
 HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json --all
-docker compose run --rm ingest ingest-dns --from-file demo/querylog.json
+docker compose run --rm ingest ingest-dns --from-file demo/querylog.json --shift-to-now
 ```
+
+`demo/querylog.json` is a static file, its timestamps froze the day it was
+written, so `--shift-to-now` rebases them (preserving every gap between
+entries) to end at the moment you run it, which is what gives the two
+24-hour-window rules something to fire on.
 
 `pytest` runs the whole suite, including one test file per rule, against a
 scratch database created and dropped per test (see `tests/conftest.py`).
@@ -113,12 +127,16 @@ home-soc/
 ├── schema/
 │   ├── 001_init.sql       # the whole data model, and the reasoning for it
 │   ├── 002_dns.sql        # dns_query and dns_domain, for the AdGuard ingester
-│   └── 003_rules.sql      # rule and rule_hit, for the rule engine
+│   ├── 003_rules.sql      # rule and rule_hit, for the rule engine
+│   └── 004_known_bad.sql  # known_bad_domain, for the abuse.ch enrichment
 ├── rules/
 │   ├── README.md          # the rule file contract
 │   ├── dns_newly_seen_domain.sql
 │   ├── dns_dga_entropy.sql
-│   └── dns_blocked_spike.sql
+│   ├── dns_blocked_spike.sql
+│   ├── dns_known_bad_domain.sql
+│   ├── dns_nxdomain_burst.sql
+│   └── dns_tunnel_volume.sql
 ├── ingest/
 │   ├── cli.py             # one entry point, invoked by a timer and by hand
 │   ├── trivy.py           # Trivy JSON to findings, including the resolve pass
@@ -154,10 +172,13 @@ server it monitors, in Docker, against that machine's own weekly scan output.
   every unpatched hole on the host.
 - **Findings and the raw scan output never leave the machine.** What you see in
   this repository is the code and an invented demo run, never real findings.
-- **The AdGuard pull is also timer-invoked**, credentials live in `.env` (the
-  API user and password AdGuard Home was given), never in this repository.
-  Query rows are pruned after `HOMESOC_DNS_RETENTION_DAYS` (35 by default),
-  while `dns_domain`, the "have I ever seen this domain" registry, is kept.
+- **The AdGuard pull is also timer-invoked**, hourly, credentials live in
+  `.env` (the API user and password AdGuard Home was given), never in this
+  repository. The pull runs through the `ingest-dns` compose service, which
+  joins the host network because AdGuard's API is deliberately loopback-bound
+  on the machine it protects. Query rows are pruned after
+  `HOMESOC_DNS_RETENTION_DAYS` (35 by default), while `dns_domain`, the "have
+  I ever seen this domain" registry, is kept.
 
 ## Design notes
 
@@ -180,8 +201,9 @@ already there.
 ## Status
 
 Early. Trivy ingest, enrichment, the prioritised report, DNS ingest and the
-rule engine with per-rule tests work against real data (phases 1 through 3).
-Not built yet: the triage UI, phase 4.
+rule engine work against real data. Phase 3 is complete: six rules, a test
+file per rule, and a CI gate that refuses a rule without one. Not built yet:
+the triage UI, phase 4.
 
 ## How this was built
 

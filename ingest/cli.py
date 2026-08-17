@@ -44,8 +44,12 @@ def cmd_ingest_trivy(args, conn):
 
 def cmd_ingest_dns(args, conn):
     db.migrate(conn)
+    if args.shift_to_now and not args.from_file:
+        # Attached to --from-file on purpose: the API mode is already pulling
+        # current data, so shifting it would only invent a false timeline.
+        raise SystemExit("--shift-to-now only makes sense with --from-file")
     if args.from_file:
-        result = adguard.ingest_file(conn, pathlib.Path(args.from_file))
+        result = adguard.ingest_file(conn, pathlib.Path(args.from_file), shift_to_now=args.shift_to_now)
     else:
         result = adguard.ingest_api(conn)
     if result.get("skipped"):
@@ -103,6 +107,14 @@ def cmd_enrich(args, conn):
     print(f"kev: {n} entries")
     n = enrich.fetch_epss(conn, only_known=not args.full)
     print(f"epss: {n} scores")
+    try:
+        n = enrich.fetch_urlhaus(conn)
+        print(f"urlhaus: {n} domains")
+    except (OSError, ValueError) as exc:
+        # A blocked feed or a changed format has to end in a readable line,
+        # not a stack trace burying the two enrichments that already
+        # succeeded above.
+        print(f"urlhaus: FAILED - {exc}")
 
 
 def cmd_rules(args, conn):
@@ -207,6 +219,10 @@ def main() -> int:
     q.add_argument("--from-file",
                     help="ingest a local JSON file shaped like one AdGuard API response, "
                          "instead of pulling from AdGuard")
+    q.add_argument("--shift-to-now", action="store_true",
+                    help="only valid with --from-file: rebase every entry's timestamp so the "
+                         "newest one lands at now, preserving relative deltas, so a static demo "
+                         "file has something in the last 24h for the time-window rules to fire on")
     q.set_defaults(fn=cmd_ingest_dns)
 
     q = sub.add_parser("exposure", help="load the hand-written image exposure map")

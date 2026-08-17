@@ -22,7 +22,7 @@ import pathlib
 import urllib.parse
 import urllib.request
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 
 import psycopg
 import tldextract
@@ -239,14 +239,49 @@ def _ingest_entries(conn: psycopg.Connection, run_key: str, entries: list[dict])
     }
 
 
-def ingest_file(conn: psycopg.Connection, path: pathlib.Path) -> dict:
+def _shift_entries_to_now(entries: list[dict]) -> list[dict]:
+    """Rebase every entry's timestamp so the newest one lands at now(),
+    preserving every relative delta between entries.
+
+    Exists for demo/querylog.json specifically: it is a static file, its
+    timestamps froze the day it was written, and the two 24-hour-window rules
+    (dns_newly_seen_domain, dns_blocked_spike) can only ever fire against data
+    inside the last day. A single constant shift, (now - the newest entry's
+    ts), applied to every entry, keeps a demo that spans a few hours spanning
+    exactly the same few hours; it just ends at now instead of on a date that
+    gets further in the past every day this repo is cloned.
+    """
+    parsed = [(_parse_ts(e.get("time")), e) for e in entries]
+    known = [ts for ts, _ in parsed if ts is not None]
+    if not known:
+        return entries
+    delta = datetime.now(timezone.utc) - max(known)
+    shifted: list[dict] = []
+    for ts, entry in parsed:
+        if ts is None:
+            shifted.append(entry)
+            continue
+        shifted.append({**entry, "time": (ts + delta).isoformat()})
+    return shifted
+
+
+def ingest_file(conn: psycopg.Connection, path: pathlib.Path, shift_to_now: bool = False) -> dict:
     """Ingest one JSON file shaped like a single AdGuard API response.
 
     `{"data": [...]}`, exactly what one page of `ingest_api` sees. Used by
     demo/ and by tests, where there is no live AdGuard Home to poll.
+
+    `shift_to_now` rebases every entry's timestamp before ingest (see
+    `_shift_entries_to_now`). `run_key` stays the file name regardless: it is
+    not derived from the shifted anchor, because deriving it from a value that
+    changes every run would make a second demo ingest of the same file insert
+    a second scan_run instead of the "already ingested" skip idempotency
+    depends on.
     """
     doc = json.loads(path.read_text())
     entries = doc.get("data") or []
+    if shift_to_now:
+        entries = _shift_entries_to_now(entries)
     return _ingest_entries(conn, path.name, entries)
 
 
