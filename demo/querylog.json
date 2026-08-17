@@ -1,0 +1,971 @@
+{
+  "data": [
+    {
+      "time": "2026-08-15T09:15:50.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "random-onetime-shop.example.net",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 18.221,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:15:24.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "aGVsbG93b3JsZHRoaXNpc2Fsb25ndHVubmVsbGFiZWw.tunnel.example.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 24.99,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:14:04.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "aGVsbG93b3JsZHRoaXNpc2Fsb25ndHVubmVsbGFiZWw.tunnel.example.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 17.074,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:11:21.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 30.756,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:09:58.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 42.349,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:06:15.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 26.107,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:05:23.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 17.702,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:03:29.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 85.879,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T09:00:13.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 47.077,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:59:51.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 27.119,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:57:38.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "xk9qz3vd7hw2.top",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 40.017,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:56:45.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 1.693,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:56:14.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "app-measurement.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 1.83,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:52:18.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "ads.pinterest.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.437,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:48:20.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "adservice.google.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.707,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:47:07.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.676,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:46:20.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "adjust.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.402,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:43:39.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.865,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:42:39.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.111,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:41:46.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "doubleclick.net",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 1.318,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:39:02.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "adjust.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 0.769,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:35:30.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "scorecardresearch.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.912,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:32:19.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "ads.pinterest.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.568,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:28:56.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.383,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:26:12.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.242,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:25:42.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "googlesyndication.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 1.415,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:24:22.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "adservice.google.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 1.929,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:23:42.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "doubleclick.net",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": false,
+      "elapsedMs": 0.303,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:20:53.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "app-measurement.com",
+        "type": "A"
+      },
+      "reason": "FilteredBlackList",
+      "status": "NXDOMAIN",
+      "upstream": null,
+      "cached": true,
+      "elapsedMs": 0.542,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:19:38.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "apple.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 31.579,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:17:22.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "d1.awsstatic.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 34.721,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:16:47.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "push.apple.com",
+        "type": "HTTPS"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 37.128,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:12:50.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "cdn.jsdelivr.net",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 34.593,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:10:10.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "api.spotify.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 6.467,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:09:04.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "clients3.google.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 14.233,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:05:04.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "d1.awsstatic.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 19.214,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:01:38.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "graph.microsoft.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 32.492,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T08:00:30.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "www.google.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 22.03,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:57:05.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "cdn.jsdelivr.net",
+        "type": "HTTPS"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 34.526,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:56:27.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "push.apple.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 1.28,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:53:06.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "self.events.data.microsoft.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 9.763,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:51:20.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "api.spotify.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 39.811,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:48:14.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "www.google.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 17.502,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:47:00.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "www.googleapis.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 6.007,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:44:39.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "gateway.icloud.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 37.931,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:43:58.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "apple.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 1.76,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:42:06.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "self.events.data.microsoft.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 15.583,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:41:05.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "www.google.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 20.8,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:40:18.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "netflix.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 7.168,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:39:58.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "apple.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 27.587,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:37:21.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "www.googleapis.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 39.849,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:34:46.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "gateway.icloud.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 7.239,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:31:32.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "ipv4.netflix.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 39.904,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:29:02.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "cdn.jsdelivr.net",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 11.247,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:26:13.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "graph.microsoft.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 26.071,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:25:17.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "www.googleapis.com",
+        "type": "HTTPS"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 23.12,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:21:54.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "netflix.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 2.252,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:20:14.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "ipv4.netflix.com",
+        "type": "HTTPS"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 25.96,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:17:32.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "www.googleapis.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 21.831,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:16:10.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "www.netflix.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 9.171,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:14:42.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "connectivitycheck.gstatic.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": false,
+      "elapsedMs": 34.793,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:12:45.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "time.apple.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 28.478,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:12:14.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "outlook.office365.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 36.97,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:11:34.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "www.googleapis.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 34.052,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:08:40.000000-04:00",
+      "client": "192.168.86.21",
+      "question": {
+        "name": "d1.awsstatic.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.0.0.1:53",
+      "cached": true,
+      "elapsedMs": 9.397,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:05:05.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "d1.awsstatic.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": false,
+      "elapsedMs": 11.849,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:04:44.000000-04:00",
+      "client": "192.168.86.34",
+      "question": {
+        "name": "self.events.data.microsoft.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": false,
+      "elapsedMs": 8.755,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:01:38.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "push.apple.com",
+        "type": "A"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "1.1.1.1:53",
+      "cached": true,
+      "elapsedMs": 2.24,
+      "answer": []
+    },
+    {
+      "time": "2026-08-15T07:00:55.000000-04:00",
+      "client": "192.168.86.20",
+      "question": {
+        "name": "clients3.google.com",
+        "type": "AAAA"
+      },
+      "reason": "NotFilteredNotFound",
+      "status": "NOERROR",
+      "upstream": "tls://1.1.1.1:853",
+      "cached": true,
+      "elapsedMs": 10.551,
+      "answer": []
+    }
+  ],
+  "oldest": "2026-08-15T07:00:55.000000-04:00"
+}

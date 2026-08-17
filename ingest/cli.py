@@ -12,6 +12,7 @@ import sys
 
 import yaml
 
+import adguard
 import db
 import enrich
 import trivy
@@ -38,6 +39,22 @@ def cmd_ingest_trivy(args, conn):
                 f"{result['inserted']} new, {result['updated']} still open, "
                 f"{result['resolved']} resolved"
             )
+
+
+def cmd_ingest_dns(args, conn):
+    db.migrate(conn)
+    if args.from_file:
+        result = adguard.ingest_file(conn, pathlib.Path(args.from_file))
+    else:
+        result = adguard.ingest_api(conn)
+    if result.get("skipped"):
+        print(f"{result['run_key']}: skipped ({result['reason']})")
+    else:
+        print(
+            f"{result['run_key']}: {result['seen']} seen, {result['inserted']} inserted, "
+            f"{result['duplicates']} duplicate, {result['skipped_entries']} skipped, "
+            f"{result['new_domains']} new domains, {result['pruned']} pruned"
+        )
 
 
 def cmd_exposure(args, conn):
@@ -143,6 +160,12 @@ def main() -> int:
     q.add_argument("--all", action="store_true",
                    help="treat PATH as a directory OF run directories and ingest every one")
     q.set_defaults(fn=cmd_ingest_trivy)
+
+    q = sub.add_parser("ingest-dns", help="ingest AdGuard Home's DNS query log")
+    q.add_argument("--from-file",
+                    help="ingest a local JSON file shaped like one AdGuard API response, "
+                         "instead of pulling from AdGuard")
+    q.set_defaults(fn=cmd_ingest_dns)
 
     q = sub.add_parser("exposure", help="load the hand-written image exposure map")
     q.add_argument("path", nargs="?", default="exposure.yaml")

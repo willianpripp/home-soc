@@ -30,6 +30,11 @@ Saturday.
   open three weeks" is answerable.
 - **Enriches from two free public feeds**: CISA KEV (is it being exploited in
   the wild) and FIRST EPSS (probability of exploitation in the next 30 days).
+- **Ingests the household's DNS query log** from AdGuard Home, one row per
+  query, with a registrable domain and a Shannon entropy score computed at
+  ingest so DGA-shaped domains and tunnelled subdomains stand out without a
+  rule reading raw qnames one at a time. Raw rows are pruned after a
+  retention window; a "domain ever seen" registry is not.
 - **Ranks by what actually matters here**, not by severity alone.
 - **Tracks state**: a finding that stops being reported is resolved, not
   deleted, and one that comes back keeps its original `first_seen` instead of
@@ -69,6 +74,7 @@ without a real scanner:
 
 ```sh
 HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json --all
+docker compose run --rm ingest ingest-dns --from-file demo/querylog.json
 ```
 
 ## Layout
@@ -76,14 +82,17 @@ HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json -
 ```
 home-soc/
 ├── schema/
-│   └── 001_init.sql       # the whole data model, and the reasoning for it
+│   ├── 001_init.sql       # the whole data model, and the reasoning for it
+│   └── 002_dns.sql        # dns_query and dns_domain, for the AdGuard ingester
 ├── ingest/
 │   ├── cli.py             # one entry point, invoked by a timer and by hand
 │   ├── trivy.py           # Trivy JSON to findings, including the resolve pass
 │   ├── enrich.py          # CISA KEV and FIRST EPSS
+│   ├── adguard.py         # AdGuard Home query log to dns_query and dns_domain
 │   ├── db.py              # connection and numbered SQL migrations
 │   └── Dockerfile         # built from the repo root, so it can see schema/
 ├── demo/                  # an invented run, so a stranger can see it work
+│   └── querylog.json      # an invented AdGuard API response
 ├── exposure.yaml          # which images are reachable, and how. Hand-written
 ├── docker-compose.yml     # postgres, plus a CLI container that never stays up
 └── README.md
@@ -108,6 +117,10 @@ server it monitors, in Docker, against that machine's own weekly scan output.
   every unpatched hole on the host.
 - **Findings and the raw scan output never leave the machine.** What you see in
   this repository is the code and an invented demo run, never real findings.
+- **The AdGuard pull is also timer-invoked**, credentials live in `.env` (the
+  API user and password AdGuard Home was given), never in this repository.
+  Query rows are pruned after `HOMESOC_DNS_RETENTION_DAYS` (35 by default),
+  while `dns_domain`, the "have I ever seen this domain" registry, is kept.
 
 ## Design notes
 
@@ -129,9 +142,9 @@ already there.
 
 ## Status
 
-Early. Trivy ingest, enrichment and the prioritised report work against real
-data. Not built yet: DNS ingest, the rule engine with per-rule tests, and the
-triage UI. Those are phases 2 to 4.
+Early. Trivy ingest, enrichment, the prioritised report and DNS ingest work
+against real data (phases 1 and 2). Not built yet: the rule engine with
+per-rule tests, and the triage UI. Those are phases 3 and 4.
 
 ## How this was built
 
