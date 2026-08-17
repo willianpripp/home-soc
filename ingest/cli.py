@@ -15,6 +15,7 @@ import yaml
 import adguard
 import db
 import enrich
+import rules
 import trivy
 
 
@@ -104,6 +105,28 @@ def cmd_enrich(args, conn):
     print(f"epss: {n} scores")
 
 
+def cmd_rules(args, conn):
+    db.migrate(conn)
+    rules_dir = pathlib.Path(args.dir) if args.dir else rules.DEFAULT_RULES_DIR
+    result = rules.run(conn, rules_dir)
+    for r in result["rules"]:
+        if "failed" in r:
+            print(f"{r['rule_id']}: FAILED - {r['failed']}")
+        elif "skipped" in r:
+            print(f"{r['rule_id']}: skipped ({r['skipped']})")
+        else:
+            print(f"{r['rule_id']}: {r['hits']} hits ({r['new']} new)")
+
+    total_hits = sum(r.get("hits", 0) for r in result["rules"])
+    total_new = sum(r.get("new", 0) for r in result["rules"])
+    failed = sum(1 for r in result["rules"] if "failed" in r)
+    print(f"\n{len(result['rules'])} rules, {total_hits} hits ({total_new} new), {failed} failed")
+    if result["any_failed"]:
+        # A broken rule has to fail the timer unit loudly, not vanish into a
+        # clean-looking exit code.
+        raise SystemExit(1)
+
+
 def cmd_report(args, conn):
     with conn.cursor() as cur:
         cur.execute(
@@ -128,25 +151,44 @@ def cmd_report(args, conn):
         rows = cur.fetchall()
         if not rows:
             print("nothing open. Either the estate is clean or nothing has been ingested.")
-            return
-        print(f"{'PRI':>4}  {'IMAGE':<34} {'EXPOSURE':<11} {'CVE':<18} {'SEV':<8} PACKAGE")
-        for image, exp, cve, sev, pkg, inst, fix, in_kev, epss, pri in rows:
-            flags = []
-            if in_kev:
-                flags.append("KEV")
-            if epss is not None and epss >= 0.1:
-                flags.append(f"EPSS {epss:.2f}")
-            tail = ("  [" + ", ".join(flags) + "]") if flags else ""
-            arrow = f"{inst} -> {fix}" if fix else f"{inst} (no fix)"
-            print(f"{pri:>4}  {image[:34]:<34} {exp:<11} {cve:<18} {sev:<8} {pkg} {arrow}{tail}")
+        else:
+            print(f"{'PRI':>4}  {'IMAGE':<34} {'EXPOSURE':<11} {'CVE':<18} {'SEV':<8} PACKAGE")
+            for image, exp, cve, sev, pkg, inst, fix, in_kev, epss, pri in rows:
+                flags = []
+                if in_kev:
+                    flags.append("KEV")
+                if epss is not None and epss >= 0.1:
+                    flags.append(f"EPSS {epss:.2f}")
+                tail = ("  [" + ", ".join(flags) + "]") if flags else ""
+                arrow = f"{inst} -> {fix}" if fix else f"{inst} (no fix)"
+                print(f"{pri:>4}  {image[:34]:<34} {exp:<11} {cve:<18} {sev:<8} {pkg} {arrow}{tail}")
 
+            cur.execute(
+                """select image, count(*) from vuln_priority
+                    where fixable group by image order by 2 desc limit 5"""
+            )
+            print("\nworst images by fixable count:")
+            for image, n in cur.fetchall():
+                print(f"  {n:>4}  {image}")
+
+        # Only printed when there is something to say: an empty rule engine
+        # section would just be noise in a report that is otherwise a
+        # backlog of things worth looking at.
         cur.execute(
-            """select image, count(*) from vuln_priority
-                where fixable group by image order by 2 desc limit 5"""
+            """select rule_id, entity, summary, first_seen, hit_count
+                 from rule_hit
+                where status = 'open'
+                order by first_seen desc
+                limit 15"""
         )
-        print("\nworst images by fixable count:")
-        for image, n in cur.fetchall():
-            print(f"  {n:>4}  {image}")
+        hit_rows = cur.fetchall()
+        if hit_rows:
+            cur.execute("select count(*) from rule_hit where status = 'open'")
+            (open_count,) = cur.fetchone()
+            print("\nopen rule hits:")
+            for rule_id, entity, summary, first_seen, hit_count in hit_rows:
+                print(f"  {first_seen.date()}  {rule_id:<26} {entity:<28} {summary} (x{hit_count})")
+            print(f"\n{open_count} open rule hit{'s' if open_count != 1 else ''}")
 
 
 def main() -> int:
@@ -175,6 +217,10 @@ def main() -> int:
     q.add_argument("--full", action="store_true",
                    help="load every EPSS score, not just CVEs already present")
     q.set_defaults(fn=cmd_enrich)
+
+    q = sub.add_parser("rules", help="run the rule engine over rules/*.sql")
+    q.add_argument("--dir", help="rules directory (default: ../rules relative to ingest/)")
+    q.set_defaults(fn=cmd_rules)
 
     q = sub.add_parser("report", help="the prioritised backlog")
     q.add_argument("--limit", type=int, default=25)

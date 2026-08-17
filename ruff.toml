@@ -4,4 +4,4 @@
 # packaged. Without this, isort files `db`, `enrich` and `trivy` alongside
 # `yaml` and then complains the block is unsorted.
 [lint.isort]
-known-first-party = ["adguard", "cli", "db", "enrich", "trivy"]
+known-first-party = ["adguard", "cli", "db", "enrich", "helpers", "rules", "trivy"]

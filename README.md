@@ -39,6 +39,11 @@ Saturday.
 - **Tracks state**: a finding that stops being reported is resolved, not
   deleted, and one that comes back keeps its original `first_seen` instead of
   masquerading as new.
+- **Runs a rule engine over the typed tables.** Rules are plain SQL files in
+  `rules/`, each one readable top to bottom. A hit persists the same way a
+  finding does: `first_seen` set once, a re-hit moves `last_seen` and nothing
+  else, and closing a hit out (accepted, false positive, resolved) is a
+  human decision the engine never makes on its own.
 
 ## How it works: why severity alone does not rank anything
 
@@ -57,6 +62,26 @@ So the priority score asks four questions in order:
 | Can it be reached? | 0–120 | Hand-written in [`exposure.yaml`](exposure.yaml), because nothing can infer it. |
 | Severity | 0–40 | Last, as a tie-break rather than the headline. |
 
+## Rules
+
+A rule is one `.sql` file in `rules/`. The file's first line, `-- description:
+<one line>`, is parsed into `rule.description`; the query below it must select
+exactly two columns, `entity` and `summary`. Everything else in the file is
+prose explaining why the rule exists and why its thresholds are what they are,
+because a rule nobody can read top to bottom is a rule nobody trusts. See
+[`rules/README.md`](rules/README.md) for the full contract.
+
+| Rule | What it watches | Why the threshold |
+|---|---|---|
+| `dns_newly_seen_domain` | A registrable domain queried for the first time in the last 24 hours | With zero inbound ports, both initial access and C2 start with a lookup nobody made before |
+| `dns_dga_entropy` | DNS names with Shannon entropy >= 3.5 bits/char and at least 12 characters | English-like labels sit under 3 bits/char; base32 or random labels sit above. The length floor stops short labels from maxing out entropy on a tiny alphabet |
+| `dns_blocked_spike` | A client whose blocked-query count in the last 24h is at least 3x its prior-week daily average, and at least 20 in absolute terms | Fires on change, not on volume; the floor stops a 0-to-3 jump from tripping it |
+
+The engine (`ingest/rules.py`) never closes a hit on its own. A hit that stops
+firing simply stops moving `last_seen`; deciding it is fixed, accepted, or a
+false positive is a human call, the same principle `vuln_finding.status`
+already applies to scan findings.
+
 ## Quick start
 
 ```sh
@@ -66,6 +91,7 @@ docker compose run --rm ingest migrate
 docker compose run --rm ingest exposure
 docker compose run --rm ingest ingest-trivy /scan/json --all
 docker compose run --rm ingest enrich
+docker compose run --rm ingest rules
 docker compose run --rm ingest report
 ```
 
@@ -77,20 +103,31 @@ HOMESOC_SCAN_DIR=./demo docker compose run --rm ingest ingest-trivy /scan/json -
 docker compose run --rm ingest ingest-dns --from-file demo/querylog.json
 ```
 
+`pytest` runs the whole suite, including one test file per rule, against a
+scratch database created and dropped per test (see `tests/conftest.py`).
+
 ## Layout
 
 ```
 home-soc/
 ├── schema/
 │   ├── 001_init.sql       # the whole data model, and the reasoning for it
-│   └── 002_dns.sql        # dns_query and dns_domain, for the AdGuard ingester
+│   ├── 002_dns.sql        # dns_query and dns_domain, for the AdGuard ingester
+│   └── 003_rules.sql      # rule and rule_hit, for the rule engine
+├── rules/
+│   ├── README.md          # the rule file contract
+│   ├── dns_newly_seen_domain.sql
+│   ├── dns_dga_entropy.sql
+│   └── dns_blocked_spike.sql
 ├── ingest/
 │   ├── cli.py             # one entry point, invoked by a timer and by hand
 │   ├── trivy.py           # Trivy JSON to findings, including the resolve pass
 │   ├── enrich.py          # CISA KEV and FIRST EPSS
 │   ├── adguard.py         # AdGuard Home query log to dns_query and dns_domain
+│   ├── rules.py           # discovers rules/*.sql and upserts what they find
 │   ├── db.py              # connection and numbered SQL migrations
 │   └── Dockerfile         # built from the repo root, so it can see schema/
+├── tests/                 # pytest: engine semantics, one file per rule
 ├── demo/                  # an invented run, so a stranger can see it work
 │   └── querylog.json      # an invented AdGuard API response
 ├── exposure.yaml          # which images are reachable, and how. Hand-written
@@ -142,9 +179,9 @@ already there.
 
 ## Status
 
-Early. Trivy ingest, enrichment, the prioritised report and DNS ingest work
-against real data (phases 1 and 2). Not built yet: the rule engine with
-per-rule tests, and the triage UI. Those are phases 3 and 4.
+Early. Trivy ingest, enrichment, the prioritised report, DNS ingest and the
+rule engine with per-rule tests work against real data (phases 1 through 3).
+Not built yet: the triage UI, phase 4.
 
 ## How this was built
 

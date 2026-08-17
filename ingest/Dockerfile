@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY ingest/ /app/ingest/
 COPY schema/ /app/schema/
+COPY rules/ /app/rules/
 
 WORKDIR /app/ingest
 ENTRYPOINT ["python", "cli.py"]
