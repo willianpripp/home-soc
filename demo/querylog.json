@@ -2,7 +2,7 @@
   "data": [
     {
       "time": "2026-08-15T09:15:50.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "client_info": {
         "name": "living-room-tv"
       },
@@ -19,9 +19,9 @@
     },
     {
       "time": "2026-08-15T09:15:24.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "client_info": {
-        "name": "willian-phone"
+        "name": "phone-a"
       },
       "question": {
         "name": "aGVsbG93b3JsZHRoaXNpc2Fsb25ndHVubmVsbGFiZWw.tunnel.example.com",
@@ -36,7 +36,7 @@
     },
     {
       "time": "2026-08-15T09:14:04.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "aGVsbG93b3JsZHRoaXNpc2Fsb25ndHVubmVsbGFiZWw.tunnel.example.com",
         "type": "A"
@@ -50,7 +50,7 @@
     },
     {
       "time": "2026-08-15T09:11:21.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -64,7 +64,7 @@
     },
     {
       "time": "2026-08-15T09:09:58.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -78,7 +78,7 @@
     },
     {
       "time": "2026-08-15T09:06:15.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -92,7 +92,7 @@
     },
     {
       "time": "2026-08-15T09:05:23.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -106,7 +106,7 @@
     },
     {
       "time": "2026-08-15T09:03:29.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -120,7 +120,7 @@
     },
     {
       "time": "2026-08-15T09:00:13.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -134,7 +134,7 @@
     },
     {
       "time": "2026-08-15T08:59:51.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -148,7 +148,7 @@
     },
     {
       "time": "2026-08-15T08:57:38.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "xk9qz3vd7hw2.top",
         "type": "A"
@@ -162,9 +162,9 @@
     },
     {
       "time": "2026-08-15T08:56:45.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "client_info": {
-        "name": "willian-phone"
+        "name": "phone-a"
       },
       "question": {
         "name": "googlesyndication.com",
@@ -179,7 +179,7 @@
     },
     {
       "time": "2026-08-15T08:56:14.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "app-measurement.com",
         "type": "A"
@@ -193,7 +193,7 @@
     },
     {
       "time": "2026-08-15T08:52:18.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "client_info": {
         "name": "living-room-tv"
       },
@@ -210,7 +210,7 @@
     },
     {
       "time": "2026-08-15T08:48:20.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "adservice.google.com",
         "type": "A"
@@ -224,7 +224,7 @@
     },
     {
       "time": "2026-08-15T08:47:07.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -238,7 +238,7 @@
     },
     {
       "time": "2026-08-15T08:46:20.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "adjust.com",
         "type": "A"
@@ -252,7 +252,7 @@
     },
     {
       "time": "2026-08-15T08:43:39.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -266,7 +266,7 @@
     },
     {
       "time": "2026-08-15T08:42:39.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -280,7 +280,7 @@
     },
     {
       "time": "2026-08-15T08:41:46.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "doubleclick.net",
         "type": "A"
@@ -294,7 +294,7 @@
     },
     {
       "time": "2026-08-15T08:39:02.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "adjust.com",
         "type": "A"
@@ -308,7 +308,7 @@
     },
     {
       "time": "2026-08-15T08:35:30.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "scorecardresearch.com",
         "type": "A"
@@ -322,7 +322,7 @@
     },
     {
       "time": "2026-08-15T08:32:19.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "ads.pinterest.com",
         "type": "A"
@@ -336,7 +336,7 @@
     },
     {
       "time": "2026-08-15T08:28:56.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -350,7 +350,7 @@
     },
     {
       "time": "2026-08-15T08:26:12.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -364,7 +364,7 @@
     },
     {
       "time": "2026-08-15T08:25:42.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "googlesyndication.com",
         "type": "A"
@@ -378,7 +378,7 @@
     },
     {
       "time": "2026-08-15T08:24:22.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "adservice.google.com",
         "type": "A"
@@ -392,7 +392,7 @@
     },
     {
       "time": "2026-08-15T08:23:42.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "doubleclick.net",
         "type": "A"
@@ -406,7 +406,7 @@
     },
     {
       "time": "2026-08-15T08:20:53.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "app-measurement.com",
         "type": "A"
@@ -420,7 +420,7 @@
     },
     {
       "time": "2026-08-15T08:19:38.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "apple.com",
         "type": "A"
@@ -434,7 +434,7 @@
     },
     {
       "time": "2026-08-15T08:17:22.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "d1.awsstatic.com",
         "type": "A"
@@ -448,7 +448,7 @@
     },
     {
       "time": "2026-08-15T08:16:47.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "push.apple.com",
         "type": "HTTPS"
@@ -462,7 +462,7 @@
     },
     {
       "time": "2026-08-15T08:12:50.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "cdn.jsdelivr.net",
         "type": "A"
@@ -476,7 +476,7 @@
     },
     {
       "time": "2026-08-15T08:10:10.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "api.spotify.com",
         "type": "A"
@@ -490,7 +490,7 @@
     },
     {
       "time": "2026-08-15T08:09:04.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "clients3.google.com",
         "type": "A"
@@ -504,7 +504,7 @@
     },
     {
       "time": "2026-08-15T08:05:04.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "d1.awsstatic.com",
         "type": "A"
@@ -518,7 +518,7 @@
     },
     {
       "time": "2026-08-15T08:01:38.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "graph.microsoft.com",
         "type": "AAAA"
@@ -532,7 +532,7 @@
     },
     {
       "time": "2026-08-15T08:00:30.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "www.google.com",
         "type": "A"
@@ -546,7 +546,7 @@
     },
     {
       "time": "2026-08-15T07:57:05.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "cdn.jsdelivr.net",
         "type": "HTTPS"
@@ -560,7 +560,7 @@
     },
     {
       "time": "2026-08-15T07:56:27.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "push.apple.com",
         "type": "A"
@@ -574,7 +574,7 @@
     },
     {
       "time": "2026-08-15T07:53:06.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "self.events.data.microsoft.com",
         "type": "A"
@@ -588,7 +588,7 @@
     },
     {
       "time": "2026-08-15T07:51:20.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "api.spotify.com",
         "type": "A"
@@ -602,7 +602,7 @@
     },
     {
       "time": "2026-08-15T07:48:14.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "www.google.com",
         "type": "AAAA"
@@ -616,7 +616,7 @@
     },
     {
       "time": "2026-08-15T07:47:00.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "www.googleapis.com",
         "type": "AAAA"
@@ -630,7 +630,7 @@
     },
     {
       "time": "2026-08-15T07:44:39.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "gateway.icloud.com",
         "type": "AAAA"
@@ -644,7 +644,7 @@
     },
     {
       "time": "2026-08-15T07:43:58.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "apple.com",
         "type": "A"
@@ -658,7 +658,7 @@
     },
     {
       "time": "2026-08-15T07:42:06.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "self.events.data.microsoft.com",
         "type": "A"
@@ -672,7 +672,7 @@
     },
     {
       "time": "2026-08-15T07:41:05.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "www.google.com",
         "type": "AAAA"
@@ -686,7 +686,7 @@
     },
     {
       "time": "2026-08-15T07:40:18.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "netflix.com",
         "type": "A"
@@ -700,7 +700,7 @@
     },
     {
       "time": "2026-08-15T07:39:58.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "apple.com",
         "type": "AAAA"
@@ -714,7 +714,7 @@
     },
     {
       "time": "2026-08-15T07:37:21.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "www.googleapis.com",
         "type": "A"
@@ -728,7 +728,7 @@
     },
     {
       "time": "2026-08-15T07:34:46.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "gateway.icloud.com",
         "type": "A"
@@ -742,7 +742,7 @@
     },
     {
       "time": "2026-08-15T07:31:32.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "ipv4.netflix.com",
         "type": "A"
@@ -756,7 +756,7 @@
     },
     {
       "time": "2026-08-15T07:29:02.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "cdn.jsdelivr.net",
         "type": "A"
@@ -770,7 +770,7 @@
     },
     {
       "time": "2026-08-15T07:26:13.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "graph.microsoft.com",
         "type": "AAAA"
@@ -784,7 +784,7 @@
     },
     {
       "time": "2026-08-15T07:25:17.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "www.googleapis.com",
         "type": "HTTPS"
@@ -798,7 +798,7 @@
     },
     {
       "time": "2026-08-15T07:21:54.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "netflix.com",
         "type": "A"
@@ -812,7 +812,7 @@
     },
     {
       "time": "2026-08-15T07:20:14.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "ipv4.netflix.com",
         "type": "HTTPS"
@@ -826,7 +826,7 @@
     },
     {
       "time": "2026-08-15T07:17:32.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "www.googleapis.com",
         "type": "A"
@@ -840,7 +840,7 @@
     },
     {
       "time": "2026-08-15T07:16:10.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "www.netflix.com",
         "type": "A"
@@ -854,7 +854,7 @@
     },
     {
       "time": "2026-08-15T07:14:42.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "connectivitycheck.gstatic.com",
         "type": "AAAA"
@@ -868,7 +868,7 @@
     },
     {
       "time": "2026-08-15T07:12:45.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "time.apple.com",
         "type": "A"
@@ -882,7 +882,7 @@
     },
     {
       "time": "2026-08-15T07:12:14.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "outlook.office365.com",
         "type": "A"
@@ -896,7 +896,7 @@
     },
     {
       "time": "2026-08-15T07:11:34.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "www.googleapis.com",
         "type": "A"
@@ -910,7 +910,7 @@
     },
     {
       "time": "2026-08-15T07:08:40.000000-04:00",
-      "client": "192.168.86.21",
+      "client": "192.0.2.21",
       "question": {
         "name": "d1.awsstatic.com",
         "type": "A"
@@ -924,7 +924,7 @@
     },
     {
       "time": "2026-08-15T07:05:05.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "d1.awsstatic.com",
         "type": "A"
@@ -938,7 +938,7 @@
     },
     {
       "time": "2026-08-15T07:04:44.000000-04:00",
-      "client": "192.168.86.34",
+      "client": "192.0.2.34",
       "question": {
         "name": "self.events.data.microsoft.com",
         "type": "A"
@@ -952,7 +952,7 @@
     },
     {
       "time": "2026-08-15T07:01:38.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "push.apple.com",
         "type": "A"
@@ -966,7 +966,7 @@
     },
     {
       "time": "2026-08-15T07:00:55.000000-04:00",
-      "client": "192.168.86.20",
+      "client": "192.0.2.20",
       "question": {
         "name": "clients3.google.com",
         "type": "AAAA"
