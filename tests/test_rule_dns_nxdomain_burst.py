@@ -39,9 +39,9 @@ def test_fires_for_a_client_spiking_past_3x_and_the_floor(conn):
     # which is both >= 30 absolute and >= 3x the 5/day baseline. The device
     # is named, same as AdGuard would carry for a client it recognises.
     _nxdomain_burst(conn, "192.168.1.51", now - timedelta(days=4), 35,
-                     client_name="willian-phone")
+                     client_name="phone-a")
     _nxdomain_burst(conn, "192.168.1.51", now - timedelta(hours=1), 40,
-                     client_name="willian-phone")
+                     client_name="phone-a")
     # Same burst, but a client AdGuard never got a name for: the summary must
     # stay clean, no dangling ", device" for a name that is not there.
     _nxdomain_burst(conn, "192.168.1.52", now - timedelta(days=4), 35)
@@ -50,7 +50,7 @@ def test_fires_for_a_client_spiking_past_3x_and_the_floor(conn):
     rules.run(conn, RULES_DIR)
     assert "192.168.1.51" in _entities(conn)
     assert "192.168.1.52" in _entities(conn)
-    assert "willian-phone" in _summary(conn, "192.168.1.51")
+    assert "phone-a" in _summary(conn, "192.168.1.51")
     assert "device" not in _summary(conn, "192.168.1.52")
 
 
