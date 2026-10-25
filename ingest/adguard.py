@@ -22,7 +22,7 @@ import pathlib
 import urllib.parse
 import urllib.request
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import psycopg
 import tldextract
@@ -89,7 +89,7 @@ def _parse_ts(raw: str | None) -> datetime | None:
     if not raw:
         return None
     try:
-        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return datetime.fromisoformat(raw)
     except ValueError:
         return None
 
@@ -258,7 +258,7 @@ def _shift_entries_to_now(entries: list[dict]) -> list[dict]:
     known = [ts for ts, _ in parsed if ts is not None]
     if not known:
         return entries
-    delta = datetime.now(timezone.utc) - max(known)
+    delta = datetime.now(UTC) - max(known)
     shifted: list[dict] = []
     for ts, entry in parsed:
         if ts is None:

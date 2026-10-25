@@ -16,7 +16,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install
-        run: pip install -r ingest/requirements-dev.txt ruff
+        run: pip install -r ingest/requirements-dev.txt
 
       - name: Lint
         run: ruff check .
@@ -52,7 +52,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:17.10
+        image: postgres:17.11
         env:
           POSTGRES_DB: homesoc
           POSTGRES_USER: homesoc

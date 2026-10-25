@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pathlib
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import rules
 from helpers import insert_query
@@ -33,7 +33,7 @@ def _blocked_burst(conn, client, ts, count, client_name=None):
 
 
 def test_fires_for_a_client_spiking_past_3x_and_the_floor(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # Baseline: 5 blocked/day over the prior week (35 total). Last day: 30,
     # which is both >= 20 absolute and >= 3x the 5/day baseline. The device
     # is named, same as AdGuard would carry for a client it recognises.
@@ -54,7 +54,7 @@ def test_fires_for_a_client_spiking_past_3x_and_the_floor(conn):
 
 
 def test_does_not_fire_for_high_but_proportionate_volume(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # A client that is simply noisy every day: last day roughly matches the
     # prior week's own daily average, so this is volume, not a spike. Left
     # nameless, same as a client AdGuard has never been told a name for.
@@ -66,7 +66,7 @@ def test_does_not_fire_for_high_but_proportionate_volume(conn):
 
 
 def test_does_not_fire_under_the_absolute_floor(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # 1/day baseline jumping to 3 is an infinite multiple of the baseline, but
     # the floor exists exactly to keep a 0-to-3 style jump from firing.
     _blocked_burst(conn, "192.168.1.70", now - timedelta(days=4), 7)  # 1/day

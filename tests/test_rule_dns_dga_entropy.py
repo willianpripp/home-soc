@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import pathlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import rules
 from helpers import insert_query
@@ -17,7 +17,7 @@ def _entities(conn):
 
 
 def test_fires_for_a_high_entropy_long_label(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # xk9qz3vd7hw2.top: the demo's own DGA-shaped domain, entropy well above
     # 3.5 and well past the 12-character floor.
     insert_query(conn, now, "192.168.1.34", "xk9qz3vd7hw2.top", "xk9qz3vd7hw2.top",
@@ -28,7 +28,7 @@ def test_fires_for_a_high_entropy_long_label(conn):
 
 
 def test_does_not_fire_for_low_entropy(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # An ordinary English-ish hostname: long enough to clear the floor, but
     # nowhere near 3.5 bits/char.
     insert_query(conn, now, "192.168.1.20", "www.example-shopping-site.com",
@@ -39,7 +39,7 @@ def test_does_not_fire_for_low_entropy(conn):
 
 
 def test_does_not_fire_for_a_short_high_entropy_qname(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # High entropy but under the 12-character floor: a naive rule without the
     # floor would fire on this and drown in ordinary short hostnames, since a
     # tiny alphabet maxes out entropy with no room for real structure.

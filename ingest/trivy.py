@@ -14,7 +14,7 @@ from __future__ import annotations
 
 import json
 import pathlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import psycopg
 
@@ -61,7 +61,7 @@ def ingest_run(conn: psycopg.Connection, run_dir: pathlib.Path) -> dict:
     # only record of when the scan actually ran. File mtimes would drift if the
     # tree were ever copied, and this has to survive a restore.
     try:
-        started = datetime.strptime(run_key, "%Y%m%d-%H%M%S").replace(tzinfo=timezone.utc)
+        started = datetime.strptime(run_key, "%Y%m%d-%H%M%S").replace(tzinfo=UTC)
     except ValueError:
         raise SystemExit(f"run directory name is not a YYYYmmdd-HHMMSS stamp: {run_key}")
 
