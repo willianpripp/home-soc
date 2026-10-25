@@ -56,7 +56,10 @@ def test_shift_to_now_keeps_run_key_as_the_file_name_for_idempotent_reruns(conn)
     assert second["run_key"] == DEMO_FILE.name
 
 
-def test_without_shift_max_ts_stays_in_the_past(conn):
+def test_without_shift_max_ts_stays_in_the_past(conn, monkeypatch):
+    # The demo log is a fixed capture that ages past the retention window, and
+    # the ingest prunes by age, so retention is widened to keep its rows.
+    monkeypatch.setenv("HOMESOC_DNS_RETENTION_DAYS", "100000")
     result = adguard.ingest_file(conn, DEMO_FILE, shift_to_now=False)
     assert result["skipped"] is False
 
