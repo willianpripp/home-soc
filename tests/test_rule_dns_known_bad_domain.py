@@ -4,7 +4,7 @@ listings)."""
 from __future__ import annotations
 
 import pathlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import rules
 from helpers import insert_known_bad, insert_query
@@ -19,7 +19,7 @@ def _entities(conn):
 
 
 def test_fires_for_a_registrable_domain_match(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     insert_known_bad(conn, "evil-malware.example")
     insert_query(conn, now, "192.168.1.10", "www.evil-malware.example",
                  "evil-malware.example")
@@ -31,7 +31,7 @@ def test_fires_for_a_registrable_domain_match(conn):
 
 
 def test_fires_for_a_subdomain_specific_listing_matched_on_the_full_qname(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # The listing IS a subdomain, not the registrable domain: matching only
     # registrable_domain would miss this entirely, only the exact-qname join
     # catches it.
@@ -44,7 +44,7 @@ def test_fires_for_a_subdomain_specific_listing_matched_on_the_full_qname(conn):
 
 
 def test_unblocked_query_is_called_out_in_the_summary(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     insert_known_bad(conn, "leaked-creds.example")
     insert_query(conn, now, "192.168.1.13", "leaked-creds.example",
                  "leaked-creds.example", blocked=False)
@@ -60,7 +60,7 @@ def test_unblocked_query_is_called_out_in_the_summary(conn):
 
 
 def test_does_not_fire_for_a_domain_that_is_not_listed(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     insert_query(conn, now, "192.168.1.14", "perfectly-fine.example",
                  "perfectly-fine.example")
 

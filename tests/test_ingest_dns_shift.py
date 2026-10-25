@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import pathlib
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import rules
 
@@ -33,7 +33,7 @@ def test_shift_to_now_rebases_max_ts_near_now(conn):
         cur.execute("select max(ts) from dns_query")
         (max_ts,) = cur.fetchone()
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     assert abs((now - max_ts).total_seconds()) < 180  # within a couple of minutes
 
 
@@ -64,5 +64,5 @@ def test_without_shift_max_ts_stays_in_the_past(conn):
         cur.execute("select max(ts) from dns_query")
         (max_ts,) = cur.fetchone()
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     assert now - max_ts > timedelta(days=1)

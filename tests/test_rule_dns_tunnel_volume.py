@@ -3,7 +3,7 @@ cardinality AND high average label entropy; neither alone is enough."""
 from __future__ import annotations
 
 import pathlib
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import rules
 from helpers import insert_query
@@ -18,7 +18,7 @@ def _entities(conn):
 
 
 def test_fires_for_high_cardinality_and_high_entropy(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     for i in range(55):
         insert_query(conn, now, "192.168.1.30", f"q{i}xk9zvd7.tunnel.example",
                      "tunnel.example", label_entropy=3.6)
@@ -28,7 +28,7 @@ def test_fires_for_high_cardinality_and_high_entropy(conn):
 
 
 def test_does_not_fire_for_high_cardinality_but_word_shaped_labels(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # A big legitimate service: plenty of distinct subdomains (shard IDs,
     # region codes), but they are word-shaped, not random, so average entropy
     # stays under the line.
@@ -41,7 +41,7 @@ def test_does_not_fire_for_high_cardinality_but_word_shaped_labels(conn):
 
 
 def test_does_not_fire_for_high_entropy_under_the_cardinality_floor(conn):
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     # High entropy but nowhere near 50 distinct names: an ordinary DGA/tunnel
     # lookup or two, not the volume a real tunnel needs to move any data.
     for i in range(10):
