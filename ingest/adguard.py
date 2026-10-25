@@ -89,7 +89,7 @@ def _parse_ts(raw: str | None) -> datetime | None:
     if not raw:
         return None
     try:
-        return datetime.fromisoformat(raw)
+        return datetime.fromisoformat(raw.replace("Z", "+00:00"))  # noqa: FURB162 (dropping it loses rows from the demo log)
     except ValueError:
         return None
 
