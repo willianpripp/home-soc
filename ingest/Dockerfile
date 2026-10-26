@@ -4,7 +4,7 @@
 #
 # Pinned like every other image in this estate, and for the same reason: a
 # floating base means two runs of the same commit can behave differently.
-FROM python:3.13-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 WORKDIR /app
 COPY ingest/requirements.txt .
