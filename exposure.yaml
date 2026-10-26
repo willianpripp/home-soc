@@ -54,6 +54,13 @@ images:
     exposure: internal
     note: holds the ledger, but no listener outside the compose network
 
+  meds-app:local:
+    exposure: tailnet
+
+  kindle-wall:local:
+    exposure: tailnet
+    note: LAN only, for the Kindle on the home Wi-Fi; scored as tailnet, the widest level here, since any device on the LAN reaches it
+
   calendar-app:local:
     exposure: tailnet
   groceries-app:
